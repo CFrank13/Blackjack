@@ -1,0 +1,151 @@
+<html>
+	<head>
+		<title> BlackJack Game </title>
+		<style type="text/css">
+			body{
+				color: white;
+				background-image: url("Blackjack_background.jpg");
+			}
+			hr{
+				width: 50%;
+			}
+			td{
+				width: 100px;
+				height: 50px;
+				background-color: green;
+				text-align: center;
+			}
+			html{
+				font-family: "Lato", sans-serif;
+			}
+			table{
+				box-shadow: 2px 3px 1px #222222;
+				background: #0E2418;
+				border-collapse: collapse;
+			}
+			table,th,td{
+				border: 2px solid white;
+			}
+			button{
+				width: 120px;
+				height: 50px;
+				color: white;
+				background-color: #701D15;
+				border: none;
+				box-shadow: 1px 2px 1px #222222;
+			}
+		</style>
+		<script type="text/javascript">
+			var player = 0;
+			var dealer = 0;
+			var bet = 0;
+			var cash = 500;
+			var name = "Connor";
+			
+			function showBet()
+			{
+				document.getElementById("betId").innerHTML = "$" + bet;
+				if(cash - bet < 0)
+				{
+					alert("You can't bet that much! Add more money");
+				}
+			}
+			function getBet()
+			{
+				var value = prompt("How much money would you like to bet?");
+				bet = parseInt(value);
+				document.getElementById("betId").innerHTML = "$" + bet;
+			}
+			function play()
+			{
+				player += Math.floor((Math.random()*11) + 1);
+				document.getElementById("playerId").innerHTML = player;
+				if(player >= 21)
+				{
+					calculateWinnings();
+				}
+			}
+			function calculateWinnings()
+			{
+				while(dealer < 18)
+				{
+					dealer += Math.floor((Math.random()*11) + 1);
+				}
+				cash -= bet;
+				document.getElementById("playerId").innerHTML = player;
+				document.getElementById("dealerId").innerHTML = dealer;
+				<!-- Win Conditions -->
+				if(player > 21)
+				{
+					document.getElementById("resultId").innerHTML = "Busted! You lose!";
+				}
+				else if(dealer > 21)
+				{
+					document.getElementById("resultId").innerHTML = "Dealer busted! " + name + " wins!";
+					cash += bet * 2;
+				}
+				else if(player == 21)
+				{
+					document.getElementById("resultId").innerHTML = name + " got 21! " + name + " wins!";
+					cash += bet * 3;
+				}
+				else if(player > dealer)
+				{
+					document.getElementById("resultId").innerHTML = name + " wins!";
+					cash += bet * 2;
+				}
+				else
+				{
+					document.getElementById("resultId").innerHTML = "Dealer wins!";
+				}
+				document.getElementById("cashId").innerHTML = "$" + cash;
+			}
+			function newGame()
+			{
+				document.getElementById("resultId").innerHTML = "";
+				document.getElementById("playerId").innerHTML = "";
+				document.getElementById("dealerId").innerHTML = "";
+				document.getElementById("betId").innerHTML = "";
+				document.getElementById("cashId").innerHTML = "$" + cash;
+				player = 0; 
+				dealer = 0;
+				bet = 0;
+			}
+			function addMoney()
+			{
+				var value = prompt("How much money would you like to add?");
+				cash += parseInt(value);
+				document.getElementById("cashId").innerHTML = "$" + cash;
+			}
+		</script>
+	</head>
+	<body>
+		<center>
+			<h1> Welcome to Black Jack! </h1>
+			<hr />
+			<table>
+				<tr>
+					<th> Your Total </th>
+					<th> Dealer Total </th>
+					<th> Bet Amount </th>
+					<th> Cash Remaining </th>
+				</tr>
+				<tr>
+					<td><p id="playerId">&nbsp;</p></td>
+					<td><p id="dealerId">&nbsp;</p></td>
+					<td><p id="betId">&nbsp;</p></td>
+					<td><p id="cashId"> $500 </p></td>
+				</tr>
+			</table>
+			<p> Game Result: <b id="resultId"></b></p>
+			<button onclick="bet+=10; showBet();"> Bet $10 </button>
+			<button onclick="getBet();"> Custom Bet </button>
+			<button onclick="newGame();"> New Game </button>
+			<br />
+			<br />
+			<button onclick="play();"> Deal Card </button>
+			<button onclick="calculateWinnings();"> Reveal Cards </button>
+			<button onclick="addMoney();"> Add Money </button>
+		</center>
+	</body>
+</html>
